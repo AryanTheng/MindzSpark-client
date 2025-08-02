@@ -5,7 +5,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
-import banner from '../assets/banner.jpg';
+import banner from '../assets/banner.jpeg';
 import bannerMobile from '../assets/banner-mobile.jpg';
 import BestPricesOffers from '../assets/Best_Prices_Offers.png';
 import WideAssortment from '../assets/Wide_Assortment.png';

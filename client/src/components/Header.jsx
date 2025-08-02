@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import logo from '../assets/logo.png'
+import logo from '../assets/logo_mindzspark-removebg-preview.png'
 import Search from './Search'
 import { Link, useLocation,useNavigate } from 'react-router-dom'
 import { FaUserCircle } from "react-icons/fa";
@@ -20,8 +20,6 @@ const Header = () => {
     const user = useSelector((state)=> state?.user)
     const [openUserMenu,setOpenUserMenu] = useState(false)
     const cartItem = useSelector(state => state.cartItem.cart)
-    // const [totalPrice,setTotalPrice] = useState(0)
-    // const [totalQty,setTotalQty] = useState(0)
     const { totalPrice, totalQty} = useGlobalContext()
  
     const redirectToLoginPage = ()=>{
@@ -41,39 +39,25 @@ const Header = () => {
         navigate("/user")
     }
 
-    //total item and total price
-    // useEffect(()=>{
-    //     const qty = cartItem.reduce((preve,curr)=>{
-    //         return preve + curr.quantity
-    //     },0)
-    //     setTotalQty(qty)
-        
-    //     const tPrice = cartItem.reduce((preve,curr)=>{
-    //         return preve + (curr.productId.price * curr.quantity)
-    //     },0)
-    //     setTotalPrice(tPrice)
-
-    // },[cartItem])
-
   return (
-    <header className='h-24 lg:h-20 lg:shadow-md lg:sticky lg:top-0 z-40 flex flex-col justify-center gap-1 bg-white'>
+    <header className='h-30 lg:h-20 lg:shadow-md lg:sticky lg:top-0 z-40 flex flex-col justify-center gap-1 bg-white'>
         {
             !(isSearchPage && isMobile) && (
-                <div className='container mx-auto flex items-center px-2 justify-between mb-3 lg:mb-0'>
+                <div className='container mx-auto flex items-center px-2 justify-between mb-0 lg:mb-0 mt-6'>
                                 {/**logo */}
                                 <div className='h-full'>
                                     <Link to={"/"} className='h-full flex justify-center items-center'>
                                         <img 
                                             src={logo}
-                                            // width={170}
-                                            // height={60}
+                                            width={60}
+                                            height={20}
                                             alt='logo'
-                                            className='hidden lg:block h-20 w-20'
+                                            className='hidden lg:block mb-4 h-15 w-15'
                                         />
                                         <img 
                                             src={logo}
-                                            width={120}
-                                            height={60}
+                                            width={70}
+                                            height={20}
                                             alt='logo'
                                             className='lg:hidden h-15 w-15'
                                         />
@@ -88,10 +72,23 @@ const Header = () => {
 
                                 {/**login and my cart */}
                                 <div className=''>
-                                    {/**user icons display in only mobile version**/}
-                                    <button className='text-neutral-600 lg:hidden' onClick={handleMobileUser}>
-                                        <FaUserCircle size={26}/>
-                                    </button>
+                                    {/**user icons and cart display in only mobile version**/}
+                                    <div className='flex items-center gap-4 lg:hidden'>
+                                        <button className='text-neutral-600' onClick={handleMobileUser}>
+                                            <FaUserCircle size={26}/>
+                                        </button>
+                                        <button 
+                                            onClick={()=>navigate('/cart')} 
+                                            className='relative text-neutral-600'
+                                        >
+                                            <BsCart4 size={26}/>
+                                            {cartItem.length > 0 && (
+                                                <span className='absolute -top-2 -right-2 bg-green-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs'>
+                                                    {totalQty}
+                                                </span>
+                                            )}
+                                        </button>
+                                    </div>
 
                                       {/**Desktop**/}
                                     <div className='hidden lg:flex  items-center gap-10'>

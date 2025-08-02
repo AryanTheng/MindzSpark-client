@@ -47,7 +47,7 @@ const Footer = () => {
         {/* Right Section - Inline Office and Mail Us */}
         <div className="flex flex-col w-full md:w-auto">
           <div className="flex flex-col md:flex-row gap-8 w-full">
-            {/* Registered Office Address */}
+            {/* Registered Office Address
             <div className="flex-1 min-w-[220px]">
               <h4 className="font-semibold text-base mb-1 text-neutral-400">Registered Office Address:</h4>
               <div className="flex items-start gap-2">
@@ -64,37 +64,37 @@ const Footer = () => {
               <div className="mt-2 text-sm">
                 Telephone: <span className="text-blue-400">044-45614700 / 044-67415800</span>
               </div>
-            </div>
-            {/* Mail Us */}
+            </div> */}
+            {/* Mail Us*/}
             <div className="flex-1 min-w-[220px]">
               <h4 className="font-semibold text-base mb-1 text-neutral-400">Mail Us:</h4>
               <address className="not-italic text-sm leading-relaxed">
-                Mindzspark,<br />
-                Buildings Alyssa, Begonia &<br />
-                Clove Embassy Tech Village,<br />
-                Outer Ring Road, Devarabeesanahalli Village,<br />
-                Bengaluru, 560103,<br />
-                Karnataka, India
-              </address>
+                Mindzspark<br />
+                Avsari khrud,<br />
+                Govenrnment college of engineering and research pune<br />
+               
+                manchar,513703,<br />
+                Pune, India
+              </address> 
               <div className="mt-3">
                 <span className="font-semibold text-base text-neutral-400">Social</span>
               </div>
             </div>
           </div>
         </div>
-      </div>
+       </div> 
       {/* Bottom Bar */}
       <div className="border-t border-neutral-800 bg-[#172337] mt-8 py-3 px-2">
         <div className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
           {/* Feature Links */}
-          {/* <div className="flex flex-wrap items-center gap-8 text-yellow-400 text-base">
+          <div className="flex flex-wrap items-center gap-8 text-yellow-400 text-base">
             <a href="#" className="flex items-center gap-2"><FaStore /> <span className="text-neutral-100">Become a Seller</span></a>
             <a href="#" className="flex items-center gap-2"><FaBullhorn /> <span className="text-neutral-100">Advertise</span></a>
             <a href="#" className="flex items-center gap-2"><FaGift /> <span className="text-neutral-100">Gift Cards</span></a>
             <a href="#" className="flex items-center gap-2"><FaQuestionCircle /> <span className="text-neutral-100">Help Center</span></a>
-          </div> */}
+          </div>
           {/* Copyright */}
-          <div className="text-neutral-100 text-sm">© 2023-2025 Mindzspark.in</div>
+          <div className="text-neutral-100 text-sm">© 2025 Mindzspark.in</div>
           {/* Payment Icons */}
           <div className="flex items-center gap-2">
             <span className="inline-block bg-white rounded p-1"><FaCcVisa className="text-blue-700 text-xl" /></span>

@@ -32,11 +32,11 @@ const Home = () => {
 
   return (
    <section className='bg-white'>
-      <div className='container mx-auto'>
+    
+      <CategorySection loadingCategory={loadingCategory} categoryData={categoryData} subCategoryData={subCategoryData} handleRedirectProductListpage={handleRedirectProductListpage} />
+  <div className='container mt-10 '>
         <HeroBanner />
       </div>
-      <CategorySection loadingCategory={loadingCategory} categoryData={categoryData} subCategoryData={subCategoryData} handleRedirectProductListpage={handleRedirectProductListpage} />
-
       {/***display category product */}
       {
         categoryData?.map((c,index)=>{

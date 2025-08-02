@@ -637,7 +637,7 @@ const ProductDisplayPage = () => {
                   onChange={e => setReviewText(e.target.value)}
                   required
                 />
-                <div className='flex gap-2'>
+                {/* <div className='flex gap-2'>
                   <input
                     type='file'
                     accept='image/*,video/*'
@@ -646,7 +646,7 @@ const ProductDisplayPage = () => {
                     className='border rounded p-1'
                   />
                   <span className='text-xs text-gray-400'>(Max 2MB/image, 10MB/video)</span>
-                </div>
+                </div> */}
                 <button
                   type='submit'
                   className='bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded self-end disabled:opacity-60 text-xs sm:text-base'
