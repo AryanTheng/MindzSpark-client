@@ -81,12 +81,12 @@ const Header = () => {
     }
 
     const handleCallSupport = () => {
-        window.location.href = 'tel:+919876543210'
+        window.location.href = 'tel:+917397901889'
     }
 
     const handleWhatsAppSupport = () => {
         const message = encodeURIComponent('Hi, I need help with my order.')
-        window.open(`https://wa.me/919876543210?text=${message}`, '_blank')
+        window.open(`https://wa.me/917397901889?text=${message}`, '_blank')
     }
 
     const handleEmailSupport = () => {
@@ -137,7 +137,7 @@ const Header = () => {
   return (
         <>
             {/* Top Bar - Contact & Support Info */}
-            <div className="bg-gray-900 text-white py-2 hidden lg:block">
+            <div className="bg-white text-white py-2 hidden lg:block">
                 <div className="container mx-auto px-4 flex justify-between items-center text-sm">
                     <div className="flex items-center space-x-6">
                         <button 
@@ -145,7 +145,7 @@ const Header = () => {
                             className="flex items-center space-x-2 hover:text-green-400 transition-colors cursor-pointer"
                         >
                             <FaPhone className="text-green-400" size={14} />
-                            <span>+91 98765 43210</span>
+                            <span>+91 7397901889</span>
                         </button>
                         <div className="flex items-center space-x-2">
                             <MdLocationOn className="text-green-400" size={16} />
@@ -459,7 +459,7 @@ const Header = () => {
                                 <FaPhone className="text-green-600" size={20} />
                                 <div className="text-left">
                                     <p className="font-medium text-gray-800">Call Support</p>
-                                    <p className="text-sm text-gray-600">+91 98765 43210</p>
+                                    <p className="text-sm text-gray-600">+91 7397901889</p>
                                             </div>
                             </button>
                             <button
