@@ -212,6 +212,35 @@ const SummaryApi = {
     getTodayOrders: {
         url: '/api/order/today-orders',
         method: 'get'
+    },
+    // Notification APIs
+    createNotification: {
+        url: '/api/notification/create',
+        method: 'post'
+    },
+    getAllNotifications: {
+        url: '/api/notification/admin/all',
+        method: 'get'
+    },
+    getUserNotifications: {
+        url: '/api/notification/user',
+        method: 'get'
+    },
+    updateNotification: {
+        url: '/api/notification/admin/update',
+        method: 'put'
+    },
+    deleteNotification: {
+        url: '/api/notification/admin/delete',
+        method: 'delete'
+    },
+    markNotificationAsRead: {
+        url: '/api/notification/user/read',
+        method: 'put'
+    },
+    getNotificationStats: {
+        url: '/api/notification/admin/stats',
+        method: 'get'
     }
 }
 

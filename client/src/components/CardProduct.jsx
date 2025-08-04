@@ -86,15 +86,18 @@ const CardProduct = ({data}) => {
           onClose={() => setShowAuthPopup(false)}
         />
       )}
-      <Link to={url} className='border py-2 lg:p-4 flex flex-col justify-between items-stretch min-w-36 max-w-56 w-full h-80 lg:h-96 rounded cursor-pointer bg-white' >
-        <div className='w-full h-32 lg:h-40 flex items-center justify-center rounded overflow-hidden relative mb-2'>
+      <Link
+        to={url}
+        className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-200 flex flex-col justify-between items-stretch min-w-36 max-w-56 w-full h-80 lg:h-96 cursor-pointer border border-gray-100 hover:border-green-200"
+      >
+        <div className='w-full aspect-square bg-gray-50 rounded-lg overflow-hidden relative mb-2 flex items-center justify-center'>
               <img 
                   src={data.image[0]}
-                  className='object-contain w-full h-full'
+                  className='object-contain w-full h-full transition-transform duration-200 group-hover:scale-105'
               />
               {/* Wishlist Heart Icon */}
               <button
-                className='absolute top-2 right-2 z-10 text-xl text-red-500 bg-white rounded-full p-1 shadow'
+                className='absolute top-2 right-2 z-10 text-xl text-red-500 bg-white rounded-full p-1 shadow hover:scale-110 transition'
                 onClick={handleWishlist}
                 disabled={wishlistLoading}
                 aria-label={inWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
@@ -114,7 +117,7 @@ const CardProduct = ({data}) => {
               }
           </div>
         </div>
-        <div className='px-2 font-medium text-ellipsis text-sm lg:text-base line-clamp-2 min-h-[2.5em]'>
+        <div className='px-2 font-semibold text-base lg:text-lg text-gray-800 mb-1 line-clamp-2 min-h-[2.5em]'>
           {data.name}
         </div>
         <div className='w-fit gap-1 px-2 text-sm lg:text-base'>
@@ -122,9 +125,9 @@ const CardProduct = ({data}) => {
           
         </div>
 
-        <div className='px-2 flex items-center justify-between gap-1 lg:gap-3 text-sm lg:text-base mt-auto'>
+        <div className='px-2 flex items-center justify-between gap-1 lg:gap-3 text-base mt-auto'>
           <div className='flex items-center gap-1'>
-            <div className='font-semibold'>
+            <div className='font-bold text-green-700 text-lg'>
                 {DisplayPriceInRupees(pricewithDiscount(data.price,data.discount))} 
             </div>
           </div>
@@ -133,7 +136,7 @@ const CardProduct = ({data}) => {
               data.stock == 0 ? (
                 <p className='text-red-500 text-sm text-center w-full'>Out of stock</p>
               ) : (
-                <AddToCartButton data={data} buttonClassName='flex-1' />
+                <AddToCartButton data={data} buttonClassName='w-full bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-semibold transition' />
               )
             }
           </div>

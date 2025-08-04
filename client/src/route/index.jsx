@@ -40,6 +40,8 @@ import EPRCompliance from '../pages/EPRCompliance';
 import Wishlist from '../pages/Wishlist';
 import ComparePage from '../pages/ComparePage';
 import OrderDetails from "../pages/OrderDetails";
+import NotificationManager from "../components/NotificationManager";
+import BannerManager from "../components/BannerManager";
 
 const router = createBrowserRouter([
     {
@@ -109,6 +111,14 @@ const router = createBrowserRouter([
                     {
                         path : 'product',
                         element : <AdminPermision><ProductAdmin/></AdminPermision>
+                    },
+                    {
+                        path : 'notifications',
+                        element : <AdminPermision><NotificationManager/></AdminPermision>
+                    },
+                    {
+                        path : 'banners',
+                        element : <AdminPermision><BannerManager/></AdminPermision>
                     }
                 ]
             },

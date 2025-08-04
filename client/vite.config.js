@@ -10,5 +10,12 @@ export default defineConfig({
   server: {
     host: true,
     allowedHosts: [], // 👈 paste your ngrok domain here
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+        secure: false
+      }
+    }
   }
 })
