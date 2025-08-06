@@ -42,7 +42,7 @@ const HeroBanner = () => {
   useEffect(() => {
     const fetchBanners = async () => {
       try {
-        const res = await Axios.get('/api/banner');
+        const res = await Axios.get('/api/banner/');
         setBanners(res.data.data || []);
       } catch (err) {
         setBanners([]);
