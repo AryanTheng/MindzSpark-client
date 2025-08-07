@@ -42,6 +42,17 @@ import ComparePage from '../pages/ComparePage';
 import OrderDetails from "../pages/OrderDetails";
 import NotificationManager from "../components/NotificationManager";
 import BannerManager from "../components/BannerManager";
+import OMSDashboard from "../pages/OMSDashboard";
+import OMSLayout from "../layouts/OMSLayout";
+import OMSOverview from "../pages/oms/OMSOverview";
+import OMSOrders from "../pages/oms/OMSOrders";
+import OMSProducts from "../pages/oms/OMSProducts";
+import OMSInventory from "../pages/oms/OMSInventory";
+import OMSPayments from "../pages/oms/OMSPayments";
+import OMSAnalytics from "../pages/oms/OMSAnalytics";
+import OMSCustomers from "../pages/oms/OMSCustomers";
+import OMSSettings from "../pages/oms/OMSSettings";
+import OMSSupport from "../pages/oms/OMSSupport";
 
 const router = createBrowserRouter([
     {
@@ -119,6 +130,10 @@ const router = createBrowserRouter([
                     {
                         path : 'banners',
                         element : <AdminPermision><BannerManager/></AdminPermision>
+                    },
+                    {
+                        path : 'oms-dashboard',
+                        element : <AdminPermision><OMSDashboard/></AdminPermision>
                     }
                 ]
             },
@@ -218,6 +233,48 @@ const router = createBrowserRouter([
             {
                 path : "order/:orderId",
                 element : <OrderDetails/>
+            },
+            {
+                path : "admin/oms-dashboard",
+                element : <AdminPermision><OMSLayout/></AdminPermision>,
+                children : [
+                    {
+                        path : "",
+                        element : <OMSOverview/>
+                    },
+                    {
+                        path : "orders",
+                        element : <OMSOrders/>
+                    },
+                    {
+                        path : "products",
+                        element : <OMSProducts/>
+                    },
+                    {
+                        path : "inventory",
+                        element : <OMSInventory/>
+                    },
+                    {
+                        path : "payments",
+                        element : <OMSPayments/>
+                    },
+                    {
+                        path : "analytics",
+                        element : <OMSAnalytics/>
+                    },
+                    {
+                        path : "customers",
+                        element : <OMSCustomers/>
+                    },
+                    {
+                        path : "settings",
+                        element : <OMSSettings/>
+                    },
+                    {
+                        path : "support",
+                        element : <OMSSupport/>
+                    }
+                ]
             }
         ]
     }
