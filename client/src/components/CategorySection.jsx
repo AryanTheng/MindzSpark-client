@@ -9,7 +9,7 @@ const CategorySection = ({ loadingCategory, categoryData, subCategoryData }) => 
   };
 
   return (
-    <div className="container mx-auto px-4 my-4">
+    <div className="container mx-auto px-4">
       <div className="overflow-x-auto" style={{ 
         scrollbarWidth: 'thin',
         msOverflowStyle: 'none',

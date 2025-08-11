@@ -14,7 +14,7 @@ const BannerManager = () => {
   const fetchBanners = async () => {
     try {
       setLoading(true);
-      const res = await Axios.get('/api/banner');
+      const res = await Axios.get('/api/banner/ban');
       setBanners(res.data.data || []);
     } catch (err) {
       toast.error('Failed to fetch banners');

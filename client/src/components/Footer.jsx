@@ -59,7 +59,7 @@ const Footer = () => {
       {showScrollTop && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-6 right-6 z-50 bg-green-600 hover:bg-green-700 text-white p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110"
+          className="fixed bottom-6 right-3 z-50 bg-green-600 hover:bg-green-700 text-white p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110"
         >
           <BsFillArrowUpCircleFill size={24} />
         </button>
@@ -100,15 +100,15 @@ const Footer = () => {
 
               {/* Newsletter Signup */}
               <div>
-                <h4 className="text-lg font-semibold mb-3">Stay Updated</h4>
+                <h4 className="text-sm font-semibold mb-3">Stay Updated</h4>
                 <p className="text-gray-300 mb-4">Subscribe to our newsletter for latest updates and offers</p>
-                <form onSubmit={handleNewsletterSubmit} className="flex">
+                <form onSubmit={handleNewsletterSubmit} className="flex mx-auto w-full">
                   <input
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Enter your email"
-                    className="flex-1 px-4 py-2 rounded-l-lg border-0 focus:outline-none focus:ring-2 focus:ring-green-500"
+                    className="flex-1 px-1 py-2 rounded-l-lg border-0 focus:outline-none focus:ring-2 focus:ring-green-500"
                     required
                   />
                   <br />
@@ -124,7 +124,7 @@ const Footer = () => {
 
             {/* Quick Links */}
             <div>
-              <h4 className="text-lg font-semibold mb-4 text-green-400">Quick Links</h4>
+              <h4 className="text-sm font-semibold mb-4 text-green-400">Quick Links</h4>
               <ul className="space-y-2">
                 <li><Link to="/about-us" className="text-gray-300 hover:text-green-400 transition-colors">About Us</Link></li>
                 <li><Link to="/contact-us" className="text-gray-300 hover:text-green-400 transition-colors">Contact Us</Link></li>

@@ -241,6 +241,10 @@ const SummaryApi = {
     getNotificationStats: {
         url: '/api/notification/admin/stats',
         method: 'get'
+    },
+    getBanner: {
+        url:'/api/banner/ban',
+        method: 'get'
     }
 }
 

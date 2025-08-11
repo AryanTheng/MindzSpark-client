@@ -31,6 +31,7 @@ const Header = () => {
     const cartItem = useSelector(state => state.cartItem.cart)
     const { totalPrice, totalQty } = useGlobalContext()
     const [isScrolled, setIsScrolled] = useState(false)
+    const [isSearching, setIsSearching] = useState(false)
 
     // Use notification context
     const { 
@@ -91,6 +92,10 @@ const Header = () => {
 
     const handleEmailSupport = () => {
         window.location.href = 'mailto:support@mindzspark.com?subject=Support Request'
+    }
+
+    const handleSearching = ()=> {
+        setIsSearching(just => !just)
     }
 
     const handleViewFullNotification = (notification) => {
@@ -175,9 +180,9 @@ const Header = () => {
             <header className={`bg-white border-b transition-all duration-300 ${
                 isScrolled ? 'shadow-lg' : 'shadow-sm'
             } sticky top-0 z-50`}>
-                <div className="container mx-auto px-4">
+                <div className="container mx-auto my-auto px-4">
                     {/* Main Header Content */}
-                    <div className="flex items-center justify-between py-4">
+                    <div className="flex items-center justify-between py-1">
                         {/* Logo */}
                         <div className="flex-shrink-0">
                             <Link to="/" className="flex items-center space-x-2 group">
@@ -362,6 +367,9 @@ const Header = () => {
 
                             {/* Mobile Actions */}
                             <div className="lg:hidden flex items-center space-x-3">
+                                <button className="text-gray-600" onClick={handleSearching}>
+                                <IoSearch size={24} />
+                                </button>
                                 <button className="text-gray-600" onClick={handleMobileUser}>
                                     <FaUserCircle size={24} />
                                 </button>
@@ -387,7 +395,7 @@ const Header = () => {
                     </div>
 
                     {/* Mobile Search Bar */}
-                    {!isSearchPage && (
+                    {!isSearchPage && isSearching && (
                         <div className="lg:hidden pb-4">
                             <Search />
                         </div>

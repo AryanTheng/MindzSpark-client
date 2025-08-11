@@ -125,12 +125,13 @@ const CardProduct = ({data}) => {
           
         </div>
 
-        <div className='px-2 flex items-center justify-between gap-1 lg:gap-3 text-base mt-auto'>
+        <div className='px-1 flex items-center justify-between gap-1 lg:gap-3 text-base mt-auto'>
           <div className='flex items-center gap-1'>
             <div className='font-bold text-green-700 text-lg'>
                 {DisplayPriceInRupees(pricewithDiscount(data.price,data.discount))} 
             </div>
           </div>
+        </div>
           <div className='flex flex-col sm:flex-row gap-2 w-full'>
             {
               data.stock == 0 ? (
@@ -140,7 +141,7 @@ const CardProduct = ({data}) => {
               )
             }
           </div>
-        </div>
+        
       </Link>
     </>
   )

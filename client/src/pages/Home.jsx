@@ -32,10 +32,13 @@ const Home = () => {
 
   return (
    <section className='bg-white'>
-    
-      <CategorySection loadingCategory={loadingCategory} categoryData={categoryData} subCategoryData={subCategoryData} handleRedirectProductListpage={handleRedirectProductListpage} />
-  <div className='container mt-10 '>
+      <div>
         <HeroBanner />
+      </div>
+      <div>
+        <CategorySection loadingCategory={loadingCategory} categoryData={categoryData} subCategoryData={subCategoryData} handleRedirectProductListpage={handleRedirectProductListpage} />
+      </div>  
+      <div className='container mt-2 '>
       </div>
       {/***display category product */}
       {
@@ -49,9 +52,6 @@ const Home = () => {
           )
         })
       }
-
-
-
    </section>
   )
 }
