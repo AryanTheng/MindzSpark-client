@@ -73,6 +73,7 @@ const Login = () => {
 
         try {
             if (loginMethod === 'otp' && loginType === 'mobile') {
+                console.log("mobile:", data.mobile)
                 // Send OTP for mobile login
                 const response = await Axios({
                     ...SummaryApi.mobileOtpLogin,
