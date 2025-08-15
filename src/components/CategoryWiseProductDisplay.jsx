@@ -71,7 +71,7 @@ const CategoryWiseProductDisplay = ({ id, name }) => {
   const redirectURL =  handleRedirectProductListpage()
     return (
         <div>
-            <div className='container mx-auto p-2 flex items-center justify-between gap-4'>
+            <div className='container mx-auto p-4 flex items-center justify-between gap-4'>
                 <h3 className='font-semibold text-lg md:text-xl'>{name}</h3>
                 <Link
                   to={redirectURL}

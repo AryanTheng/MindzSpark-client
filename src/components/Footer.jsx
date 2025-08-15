@@ -59,7 +59,7 @@ const Footer = () => {
       {showScrollTop && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-6 right-3 z-50 bg-green-600 hover:bg-green-700 text-white p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110"
+          className="fixed bottom-6 right-6 z-50 bg-green-600 hover:bg-green-700 text-white p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110"
         >
           <BsFillArrowUpCircleFill size={24} />
         </button>
@@ -100,9 +100,9 @@ const Footer = () => {
 
               {/* Newsletter Signup */}
               <div>
-                <h4 className="text-sm font-semibold mb-3">Stay Updated</h4>
+                <h4 className="text-lg font-semibold mb-3">Stay Updated</h4>
                 <p className="text-gray-300 mb-4">Subscribe to our newsletter for latest updates and offers</p>
-                <form onSubmit={handleNewsletterSubmit} className="flex mx-auto w-full">
+                <form onSubmit={handleNewsletterSubmit} className="flex">
                   <input
                     type="email"
                     value={email}
@@ -115,8 +115,9 @@ const Footer = () => {
                   <button
                     type="submit"
                     className="bg-green-600 hover:bg-green-700 px-0 py-1 rounded-r-lg transition-colors duration-200"
-                  >
+                 >
                     Subscribe
+                
                   </button>
                 </form>
               </div>
@@ -124,7 +125,7 @@ const Footer = () => {
 
             {/* Quick Links */}
             <div>
-              <h4 className="text-sm font-semibold mb-4 text-green-400">Quick Links</h4>
+              <h4 className="text-lg font-semibold mb-4 text-green-400">Quick Links</h4>
               <ul className="space-y-2">
                 <li><Link to="/about-us" className="text-gray-300 hover:text-green-400 transition-colors">About Us</Link></li>
                 <li><Link to="/contact-us" className="text-gray-300 hover:text-green-400 transition-colors">Contact Us</Link></li>
@@ -179,19 +180,19 @@ const Footer = () => {
 
               {/* Features */}
               <div className="flex flex-wrap items-center gap-6 text-sm">
-                <a href="#" className="flex items-center space-x-2 text-gray-300 hover:text-green-400 transition-colors">
+                <a href="#" className="flex items-center space-x-2 text-white hover:text-green-400 transition-colors">
                   <FaStore size={16} />
                   <span>Become a Seller</span>
                 </a>
-                <a href="#" className="flex items-center space-x-2 text-gray-300 hover:text-green-400 transition-colors">
+                <a href="#" className="flex items-center space-x-2 text-yellow-500 hover:text-green-400 transition-colors">
                   <FaBullhorn size={16} />
                   <span>Advertise</span>
                 </a>
-                <a href="#" className="flex items-center space-x-2 text-gray-300 hover:text-green-400 transition-colors">
+                <a href="#" className="flex items-center space-x-2 text-white hover:text-green-400 transition-colors">
                   <FaGift size={16} />
                   <span>Gift Cards</span>
                 </a>
-                <a href="#" className="flex items-center space-x-2 text-gray-300 hover:text-green-400 transition-colors">
+                <a href="#" className="flex items-center space-x-2 text-white hover:text-green-400 transition-colors">
                   <FaQuestionCircle size={16} />
                   <span>Help Center</span>
                 </a>

@@ -20,17 +20,14 @@ const CardProduct = ({data}) => {
     const [wishlistLoading, setWishlistLoading] = useState(false);
     const [inWishlist, setInWishlist] = useState(false);
 
-    // Check if product is in wishlist on mount (optional: can be improved with global state)
+    // Check if product is in wishlist on mount
     useEffect(() => {
-      // Optionally fetch wishlist status from API or props
-      // For now, default to false
       setInWishlist(false);
     }, [data._id]);
 
     const handleBuyNow = (e) => {
       e.preventDefault();
       e.stopPropagation();
-      // Redirect to checkout page with product id (customize as needed)
       navigate(`/checkout?productId=${data._id}`);
     }
 
@@ -86,63 +83,89 @@ const CardProduct = ({data}) => {
           onClose={() => setShowAuthPopup(false)}
         />
       )}
-      <Link
-        to={url}
-        className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-200 flex flex-col justify-between items-stretch min-w-36 max-w-56 w-full h-80 lg:h-96 cursor-pointer border border-gray-100 hover:border-green-200"
-      >
-        <div className='w-full aspect-square bg-gray-50 rounded-lg overflow-hidden relative mb-2 flex items-center justify-center'>
-              <img 
-                  src={data.image[0]}
-                  className='object-contain w-full h-full transition-transform duration-200 group-hover:scale-105'
-              />
-              {/* Wishlist Heart Icon */}
-              <button
-                className='absolute top-2 right-2 z-10 text-xl text-red-500 bg-white rounded-full p-1 shadow hover:scale-110 transition'
-                onClick={handleWishlist}
-                disabled={wishlistLoading}
-                aria-label={inWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
-              >
-                {inWishlist ? <FaHeart /> : <FaRegHeart />}
-              </button>
-        </div>
-        <div className='flex items-center gap-1 px-2'>
-          <div className='rounded text-xs w-fit p-[1px] px-2 text-green-600 bg-green-50'>
-                10 min 
+      <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-200 flex flex-col min-w-40 max-w-60 w-full h-auto border border-gray-100 hover:border-green-200 overflow-hidden">
+        {/* Image Container - Fixed aspect ratio */}
+        <Link to={url} className="block">
+          <div className='w-full aspect-square bg-gray-50 overflow-hidden relative flex items-center justify-center group'>
+                <img 
+                    src={data.image[0]}
+                    alt={data.name}
+                    className='object-contain w-full h-full transition-transform duration-200 group-hover:scale-105'
+                />
+                {/* Wishlist Heart Icon */}
+                <button
+                  className='absolute top-2 right-2 z-10 text-lg text-red-500 bg-white rounded-full p-1.5 shadow hover:scale-110 transition-transform duration-200'
+                  onClick={handleWishlist}
+                  disabled={wishlistLoading}
+                  aria-label={inWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
+                >
+                  {wishlistLoading ? (
+                    <div className="w-4 h-4 border-2 border-red-500 border-t-transparent rounded-full animate-spin"></div>
+                  ) : (
+                    inWishlist ? <FaHeart /> : <FaRegHeart />
+                  )}
+                </button>
           </div>
-          <div>
-              {
-                Boolean(data.discount) && (
-                  <p className='text-green-600 bg-green-100 px-2 w-fit text-xs rounded-full'>{data.discount}% discount</p>
-                )
-              }
-          </div>
-        </div>
-        <div className='px-2 font-semibold text-base lg:text-lg text-gray-800 mb-1 line-clamp-2 min-h-[2.5em]'>
-          {data.name}
-        </div>
-        <div className='w-fit gap-1 px-2 text-sm lg:text-base'>
-          {data.unit} 
-          
-        </div>
+        </Link>
 
-        <div className='px-1 flex items-center justify-between gap-1 lg:gap-3 text-base mt-auto'>
-          <div className='flex items-center gap-1'>
-            <div className='font-bold text-green-700 text-lg'>
-                {DisplayPriceInRupees(pricewithDiscount(data.price,data.discount))} 
+        {/* Content Container - Flexible height */}
+        <div className="p-3 flex flex-col flex-grow">
+          {/* Category and Discount Tags */}
+          <div className='flex items-center gap-2 mb-2 flex-wrap'>
+            <div className='rounded text-xs px-2 py-1 text-green-600 bg-green-50 font-medium'>
+              {data?.category?.name}
+            </div>
+            {Boolean(data.discount) && (
+              <div className='text-green-600 bg-green-100 px-2 py-1 text-xs rounded-full font-medium'>
+                {data.discount}% off
+              </div>
+            )}
+          </div>
+
+          {/* Product Name - Fixed height with line clamping */}
+          <Link to={url}>
+            <h3 className='font-semibold text-sm lg:text-base text-gray-800 mb-2 line-clamp-2 leading-tight hover:text-green-600 transition-colors'>
+              {data.name}
+            </h3>
+          </Link>
+
+          {/* Unit */}
+          <div className='text-xs lg:text-sm text-gray-600 mb-2'>
+            {data.unit}
+          </div>
+
+          {/* Price and Add to Cart Section - Always at bottom */}
+          <div className='mt-auto'>
+            {/* Price */}
+            <div className='mb-3'>
+              <div className='flex items-center gap-2'>
+                <span className='font-bold text-green-700 text-base lg:text-lg'>
+                  {DisplayPriceInRupees(pricewithDiscount(data.price, data.discount))}
+                </span>
+                {Boolean(data.discount) && (
+                  <span className='text-gray-500 line-through text-sm'>
+                    {DisplayPriceInRupees(data.price)}
+                  </span>
+                )}
+              </div>
+            </div>
+
+            {/* Add to Cart Button */}
+            <div className='w-full'>
+              {data.stock === 0 ? (
+                <div className='text-red-500 text-sm text-center py-2 font-medium'>
+                  Out of stock
+                </div>
+              ) : (
+                <AddToCartButton 
+                  data={data} 
+                  buttonClassName='w-full bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg font-medium transition-colors duration-200 text-sm'
+                />
+              )}
             </div>
           </div>
         </div>
-          <div className='flex flex-col justify-center items-center sm:flex-row gap-2 w-full'>
-            {
-              data.stock == 0 ? (
-                <p className='text-red-500 text-sm text-center w-full'>Out of stock</p>
-              ) : (
-                <AddToCartButton data={data} buttonClassName='w-full bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-semibold transition' />
-              )
-            }
-          </div>
-        
-      </Link>
+      </div>
     </>
   )
 }

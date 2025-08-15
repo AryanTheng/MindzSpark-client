@@ -68,7 +68,7 @@ const HeroBanner = () => {
     : staticSlides;
 
   return (
-    <div className="w-full relative mt-1 sm:mt-6 md:mt-8 lg:mt-10">
+    <div className="w-full relative mt-4 sm:mt-6 md:mt-8 lg:mt-10">
       <Swiper
         modules={[Navigation, Autoplay, Pagination]}
         spaceBetween={0}

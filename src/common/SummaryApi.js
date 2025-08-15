@@ -1,12 +1,29 @@
 export const baseURL = import.meta.env.VITE_API_URL
 
 const SummaryApi = {
+    // Authentication APIs
     register : {
         url : '/api/user/register',
         method : 'post'
     },
+    verifyMobileOtp : {
+        url : '/api/user/verify-mobile-otp',
+        method : 'post'
+    },
+    resendMobileOtp : {
+        url : '/api/user/resend-mobile-otp',
+        method : 'post'
+    },
     login : {
         url : '/api/user/login',
+        method : 'post'
+    },
+    mobileOtpLogin : {
+        url : '/api/user/mobile-otp-login',
+        method : 'post'
+    },
+    verifyMobileLoginOtp : {
+        url : '/api/user/verify-mobile-login-otp',
         method : 'post'
     },
     forgot_password : {
@@ -254,6 +271,27 @@ const SummaryApi = {
         url: '/api/user/verify-confirm-order',
         method: 'put'
     },
+    // KYC and verification APIs
+    getKycStatus: {
+        url: '/api/user/kyc-status',
+        method: 'get'
+    },
+    sendEmailVerification: {
+        url: '/api/user/send-email-verification',
+        method: 'post'
+    },
+    sendMobileVerificationOtp: {
+        url: '/api/user/send-mobile-verification-otp',
+        method: 'post'
+    },
+    addEmailToAccount: {
+        url: '/api/user/add-email',
+        method: 'post'
+    },
+    addMobileToAccount: {
+        url: '/api/user/add-mobile',
+        method: 'post'
+    }
 }
 
 export default SummaryApi
