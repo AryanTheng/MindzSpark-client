@@ -170,6 +170,7 @@ const SummaryApi = {
         url : '/api/order/order-list',
         method : 'get'
     },
+    
     createRazorpayOrder : {
         url : '/api/order/create-razorpay-order',
         method : 'post'
