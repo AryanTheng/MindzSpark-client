@@ -80,7 +80,9 @@ function App() {
         <main className='min-h-[78vh]'>
             <Outlet/>
         </main>
-        <Footer/>
+        <div>
+          <Footer/>
+        </div>
         <Toaster/>
         {
           location.pathname !== '/checkout' && (

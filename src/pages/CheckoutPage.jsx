@@ -12,6 +12,7 @@ import logo from '../assets/logo.png'
 import { useNavigate } from 'react-router-dom';
 import PopupBanner from '../components/CofirmBox';
 import { handleAddItemCart } from '../store/cartProduct';
+import cod from '../assets/cod.png'
 
 const CheckoutPage = () => {
   const { notDiscountTotalPrice, totalPrice, totalQty, fetchCartItem, fetchOrder } = useGlobalContext();
@@ -47,19 +48,37 @@ const CheckoutPage = () => {
   const hasAddress = addressList && addressList.length > 0;
 
   // Step 4: OTP send/verify (placeholder logic)
-  const handleSendOtp = () => {
-    setOtpSent(true);
-    setError('');
-    toast.success('OTP sent (simulated)');
+  const handleSendOtp = async () => {
+    try {
+      const res = await Axios({
+        ...SummaryApi.confirmOrderEmail,
+        data: { email: user.email }
+      });
+      if (res.data.success) {
+        setOtpSent(true);
+        setError('');
+        toast.success('OTP sent successfully!');
+      }
+    } catch (error) {
+      toast.success('Something went wrong please try again later.');
+    }
   };
-  const handleVerifyOtp = () => {
-    if (otp === '123456') {
-      setOtpVerified(true);
-      setStep(5);
-      setError('');
-      toast.success('OTP verified!');
-    } else {
-      setError('Invalid OTP');
+  const handleVerifyOtp = async() => {
+    try {
+      const res = await Axios({
+        ...SummaryApi.verifyOrderOtp,
+        data: { email: user.email, otp: otp}
+      })
+      if (res.data.success){
+        setOtpVerified(true);
+        setStep(5);
+        setError('');
+        toast.success('OTP verified!');
+      } else {
+        setError('Invalid OTP');
+      }
+    } catch (error) {
+      toast.error('Unable to verify otp at this time please try again later.');
     }
   };
 
@@ -133,79 +152,94 @@ const CheckoutPage = () => {
 
   // Razorpay payment handler
   const handleOnlinePayment = async () => {
-    console.log('Razorpay Key:', import.meta.env.VITE_RAZORPAY_KEY_ID);
-    console.log('window.Razorpay:', window.Razorpay);
-    if (!window.Razorpay || !razorpayLoaded.current) {
-      toast.error('Payment gateway not loaded. Please wait a moment and try again.');
-      return;
+  if (!window.Razorpay || !razorpayLoaded.current) {
+    toast.error("Payment gateway not loaded. Please wait and try again.");
+    return;
+  }
+
+  setLoading(true);
+
+  try {
+    // Prepare payload for backend order creation
+    const payload = {
+      list_items: cartItemsList,
+      addressId: addressList[selectAddress]?._id,
+      subTotalAmt: totalPrice, // Make sure backend handles paise conversion
+      totalAmt: totalPrice,
+      currency: "INR",
+      receipt: `receipt_${Date.now()}`,
+      notes: { note: "Order from frontend" },
+    };
+
+    // Create Razorpay order via backend
+    const { data: res } = await Axios({
+      ...SummaryApi.createRazorpayOrder,
+      data: payload,
+    });
+
+    if (!res?.success || !res?.order) {
+      throw new Error("Payment order creation failed");
     }
-    setLoading(true);
-    try {
-      const payload = {
-        list_items: cartItemsList,
-        addressId: addressList[selectAddress]?._id,
-        subTotalAmt: totalPrice,
-        totalAmt: totalPrice,
-        currency: "INR",
-        receipt: "receipt_" + Date.now(),
-        notes: { note: "Order from frontend" }
-      };
-      const response = await Axios({
-        ...SummaryApi.createRazorpayOrder,
-        data: payload
-      });
-      const { data: res } = response;
-      if (!res.success) {
-        toast.error("Payment order failed");
-        setLoading(false);
-        return;
-      }
-      const options = {
-        key: import.meta.env.VITE_RAZORPAY_KEY_ID,
-        amount: res.order.amount,
-        currency: res.order.currency,
-        name: "MindzSpark",
-        description: "Payment for your order",
-        image: logo,
-        order_id: res.order.id,
-        handler: async (response) => {
-          try {
-            const verifyPayload = {
-              razorpay_order_id: response.razorpay_order_id,
-              razorpay_payment_id: response.razorpay_payment_id,
-              razorpay_signature: response.razorpay_signature,
-              addressId: addressList[selectAddress]?._id
-            };
-            const verifyRes = await Axios({
-              ...SummaryApi.verifyRazorpayPayment,
-              data: verifyPayload
-            });
-            if (verifyRes.data.success) {
-              toast.success("Payment successful!");
-              fetchCartItem?.();
-              fetchOrder?.();
-              dispatch(handleAddItemCart([]));
-              setStep(7);
-            } else {
-              toast.error("Payment verification failed");
-            }
-          } catch (err) {
-            AxiosToastError(err);
+
+    // Razorpay checkout options
+    const options = {
+      key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+      amount: res.order.amount,
+      currency: res.order.currency,
+      name: "MindzSpark",
+      description: "Payment for your order",
+      image: logo, // Make sure this is a valid imported asset or absolute URL
+      order_id: res.order.id,
+      handler: async (response) => {
+        try {
+          // Verify payment on backend
+          const verifyPayload = {
+            razorpay_order_id: response.razorpay_order_id,
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_signature: response.razorpay_signature,
+            addressId: addressList[selectAddress]?._id,
+          };
+
+          const verifyRes = await Axios({
+            ...SummaryApi.verifyRazorpayPayment,
+            data: verifyPayload,
+          });
+
+          if (verifyRes.data?.success) {
+            toast.success("✅ Payment successful!");
+            fetchCartItem?.();
+            fetchOrder?.();
+            dispatch(handleAddItemCart([]));
+            setStep(7);
+          } else {
+            toast.error("❌ Payment verification failed");
           }
+        } catch (err) {
+          AxiosToastError(err);
+        } finally {
           setLoading(false);
-        },
-        theme: { color: "#3399cc" }
-      };
-      const rzp = new window.Razorpay(options);
-      rzp.open();
-    } catch (error) {
-      if (error?.response?.data?.message === 'Provide token') {
-        setShowAuthPopup(true);
-      }
+        }
+      },
+      theme: { color: "#3399cc" },
+    };
+
+    // Open Razorpay payment popup
+    const rzp = new window.Razorpay(options);
+    rzp.open();
+  } catch (error) {
+    if (error?.response?.data?.message === "Provide token") {
+      setShowAuthPopup(true);
+    } else {
       AxiosToastError(error);
-      setLoading(false);
     }
-  };
+    setLoading(false);
+  }
+};
+
+
+  const errormsg = () => {
+    toast.error("This Service is Temporarly shutdown kindly use Razorpay or COD for now");
+  }
 
   return (
     <section className='bg-blue-50 min-h-screen'>
@@ -335,11 +369,19 @@ const CheckoutPage = () => {
             <div>
               <h3 className='text-lg font-semibold mb-2'>Select Payment Type</h3>
               <div className='flex flex-col gap-2 mb-4'>
-                <button className='border px-4 py-2 rounded hover:bg-blue-50' onClick={() => handleSelectPayment('UPI')}>UPI</button>
+                <button className='flex justify-center items-center border px-4 py-2 rounded hover:bg-blue-50' onClick={() => handleOnlinePayment()}>
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/8/89/Razorpay_logo.svg" alt="Razorpay" className="h-8"/></button>
+                <button className='flex justify-center items-center border px-4 py-2 rounded hover:bg-blue-50' onClick={() => errormsg()}>
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/b/ba/Stripe_Logo%2C_revised_2016.svg" alt="Stripe" className="h-8"/></button>
+                <button className='flex justify-center items-center border px-4 py-2 rounded hover:bg-blue-50' onClick={() => errormsg()}>
+                  <img src="https://cdn.worldvectorlogo.com/logos/phonepe-1.svg" alt="PhonePe" className="h-8"/></button>
+                <button className='flex justify-center items-center border px-4 py-2 rounded hover:bg-blue-50' onClick={() => handleSelectPayment('COD')}>
+                  <img src={cod} alt="COD" className="h-8"/><div className='px-4 font-extrabold'>Cash on Delivery</div></button>
+                {/* <button className='border px-4 py-2 rounded hover:bg-blue-50' onClick={() => handleSelectPayment('UPI')}>UPI</button>
                 <button className='border px-4 py-2 rounded hover:bg-blue-50' onClick={() => handleSelectPayment('Credit')}>Credit Card</button>
                 <button className='border px-4 py-2 rounded hover:bg-blue-50' onClick={() => handleSelectPayment('Debit')}>Debit Card</button>
                 <button className='border px-4 py-2 rounded hover:bg-blue-50' onClick={() => handleSelectPayment('NetBanking')}>Net Banking</button>
-                <button className='border px-4 py-2 rounded hover:bg-blue-50' onClick={() => handleSelectPayment('COD')}>Cash on Delivery (COD)</button>
+                <button className='border px-4 py-2 rounded hover:bg-blue-50' onClick={() => handleSelectPayment('COD')}>Cash on Delivery (COD)</button> */}
               </div>
               <div className='flex justify-between mt-6'>
                 <button className='bg-gray-200 px-4 py-2 rounded' onClick={handleBack}>Back</button>

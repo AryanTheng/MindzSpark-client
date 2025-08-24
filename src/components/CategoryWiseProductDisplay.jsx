@@ -95,10 +95,9 @@ const CategoryWiseProductDisplay = ({ id, name }) => {
                     {
                         data.map((p, index) => {
                             return (
-                                <CardProduct
-                                    data={p}
-                                    key={p._id + "CategorywiseProductDisplay" + index}
-                                />
+                                <div className='w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6' key={p._id + "CategorywiseProductDisplay" + index}>
+                                    <CardProduct data={p} key={p._id + "CategorywiseProductDisplay" + index}/> 
+                                </div>   
                             )
                         })
                     }

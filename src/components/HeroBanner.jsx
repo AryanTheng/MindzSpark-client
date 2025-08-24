@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Autoplay, Pagination } from 'swiper/modules';
+import SummaryApi from '../common/SummaryApi'
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -42,9 +43,12 @@ const HeroBanner = () => {
   useEffect(() => {
     const fetchBanners = async () => {
       try {
-        const res = await Axios.get('/api/banner/');
+        const res = await Axios({...SummaryApi.getBanner});
+        // const res = await Axios.get('/api/banner/');
+        console.log('Fetched banners:', res);
         setBanners(res.data.data || []);
       } catch (err) {
+        console.error("There was an error fetching banners:", err);
         setBanners([]);
       } finally {
         setLoading(false);

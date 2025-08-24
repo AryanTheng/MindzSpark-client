@@ -1,226 +1,121 @@
-import React, { useState, useEffect } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
-import toast from 'react-hot-toast'
-import Axios from '../utils/Axios'
-import SummaryApi from '../common/SummaryApi'
-import AxiosToastError from '../utils/AxiosToastError'
+import React, { useEffect, useRef, useState } from 'react'
+import { FaRegEyeSlash } from "react-icons/fa6";
+import { FaRegEye } from "react-icons/fa6";
+import toast from 'react-hot-toast';
+import Axios from '../utils/Axios';
+import SummaryApi from '../common/SummaryApi';
+import AxiosToastError from '../utils/AxiosToastError';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 const OtpVerification = () => {
-    const [otp, setOtp] = useState('')
-    const [otpTimer, setOtpTimer] = useState(60)
-    const [isResending, setIsResending] = useState(false)
+    const [data, setData] = useState(["","","","","",""])
     const navigate = useNavigate()
+    const inputRef = useRef([])
     const location = useLocation()
-    
-    // Get mobile number and verification type from location state
-    const { mobile, verificationType = 'registration' } = location.state || {}
 
-    useEffect(() => {
-        if (!mobile) {
-            toast.error('Mobile number not found')
-            navigate('/register')
-            return
+    console.log("location",location)
+
+    useEffect(()=>{
+        if(!location?.state?.email){
+            navigate("/forgot-password")
         }
+    },[])
 
-        // Start timer
-        const timer = setInterval(() => {
-            setOtpTimer((prev) => {
-                if (prev <= 1) {
-                    clearInterval(timer)
-                    return 0
-                }
-                return prev - 1
-            })
-        }, 1000)
+    const valideValue = data.every(el => el)
 
-        return () => clearInterval(timer)
-    }, [mobile, navigate])
-
-    const handleOtpChange = (e) => {
-        const value = e.target.value.replace(/\D/g, '')
-        if (value.length <= 6) {
-            setOtp(value)
-        }
-    }
-
-    const handleVerifyOtp = async (e) => {
+    const handleSubmit = async(e)=>{
         e.preventDefault()
 
-        if (!otp || otp.length !== 6) {
-            toast.error('Please enter a valid 6-digit OTP')
-            return
-        }
-
         try {
-            let response
-            
-            if (verificationType === 'registration') {
-                response = await Axios({
-                    ...SummaryApi.verifyMobileOtp,
-                    data: { mobile, otp }
-                })
-            } else if (verificationType === 'login') {
-                response = await Axios({
-                    ...SummaryApi.verifyMobileLoginOtp,
-                    data: { mobile, otp }
-                })
-            }
-
-            if (response.data.error) {
-                toast.error(response.data.message)
-                return
-            }
-
-            if (response.data.success) {
-                toast.success(response.data.message)
-                
-                if (verificationType === 'registration') {
-                    navigate('/login')
-                } else if (verificationType === 'login') {
-                    // Handle login success
-                    localStorage.setItem('accesstoken', response.data.data.accesstoken)
-                    localStorage.setItem('refreshToken', response.data.data.refreshToken)
-                    navigate('/')
+            const response = await Axios({
+                ...SummaryApi.forgot_password_otp_verification,
+                data : {
+                    otp : data.join(""),
+                    email : location?.state?.email
                 }
-            }
-
-        } catch (error) {
-            AxiosToastError(error)
-        }
-    }
-
-    const handleResendOtp = async () => {
-        if (isResending) return
-
-        setIsResending(true)
-        
-        try {
-            let response
+            })
             
-            if (verificationType === 'registration') {
-                response = await Axios({
-                    ...SummaryApi.resendMobileOtp,
-                    data: { mobile }
-                })
-            } else if (verificationType === 'login') {
-                response = await Axios({
-                    ...SummaryApi.mobileOtpLogin,
-                    data: { mobile }
-                })
-            }
-
-            if (response.data.error) {
+            if(response.data.error){
                 toast.error(response.data.message)
-                return
             }
 
-            if (response.data.success) {
+            if(response.data.success){
                 toast.success(response.data.message)
-                setOtpTimer(60)
-                setOtp('')
-                
-                // Restart timer
-                const timer = setInterval(() => {
-                    setOtpTimer((prev) => {
-                        if (prev <= 1) {
-                            clearInterval(timer)
-                            return 0
-                        }
-                        return prev - 1
-                    })
-                }, 1000)
+                setData(["","","","","",""])
+                navigate("/reset-password",{
+                    state : {
+                        data : response.data,
+                        email : location?.state?.email
+                    }
+                })
             }
 
         } catch (error) {
+            console.log('error',error)
             AxiosToastError(error)
-        } finally {
-            setIsResending(false)
         }
+
+
+
     }
 
     return (
         <section className='w-full container mx-auto px-2'>
             <div className='bg-white my-4 w-full max-w-lg mx-auto rounded p-7'>
-                <div className='text-center mb-6'>
-                    <div className='w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4'>
-                        <svg className='w-8 h-8 text-green-600' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                            <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z' />
-                        </svg>
-                    </div>
-                    <h2 className='text-2xl font-semibold text-gray-800 mb-2'>
-                        Verify Mobile Number
-                    </h2>
-                    <p className='text-gray-600'>
-                        We've sent a 6-digit OTP to
-                    </p>
-                    <p className='text-lg font-semibold text-gray-800'>
-                        +91 {mobile}
-                    </p>
-                </div>
+                <p className='font-semibold text-lg'>Enter OTP</p>
+                <form className='grid gap-4 py-4' onSubmit={handleSubmit}>
+                    <div className='grid gap-1'>
+                        <label htmlFor='otp'>Enter Your OTP :</label>
+                        <div className='flex items-center gap-2 justify-between mt-3'>
+                            {
+                                data.map((element,index)=>{
+                                    return(
+                                        <input
+                                            key={"otp"+index}
+                                            type='text'
+                                            id='otp'
+                                            ref={(ref)=>{
+                                                inputRef.current[index] = ref
+                                                return ref 
+                                            }}
+                                            value={data[index]}
+                                            onChange={(e)=>{
+                                                const value =  e.target.value
+                                                console.log("value",value)
 
-                <form onSubmit={handleVerifyOtp} className='space-y-6'>
-                    <div>
-                        <label htmlFor='otp' className='block text-sm font-medium text-gray-700 mb-2'>
-                            Enter OTP
-                        </label>
-                        <input
-                            type='text'
-                            id='otp'
-                            value={otp}
-                            onChange={handleOtpChange}
-                            maxLength={6}
-                            className='w-full px-4 py-3 text-center text-2xl tracking-widest border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none'
-                            placeholder='000000'
-                            autoFocus
-                        />
-                    </div>
+                                                const newData = [...data]
+                                                newData[index] = value
+                                                setData(newData)
 
-                    <button
-                        type='submit'
-                        disabled={otp.length !== 6}
-                        className={`w-full py-3 px-4 rounded-lg font-semibold text-white transition-colors ${
-                            otp.length === 6
-                                ? 'bg-green-600 hover:bg-green-700'
-                                : 'bg-gray-400 cursor-not-allowed'
-                        }`}
-                    >
-                        Verify OTP
-                    </button>
+                                                if(value && index < 5){
+                                                    inputRef.current[index+1].focus()
+                                                }
+
+
+                                            }}
+                                            maxLength={1}
+                                            className='bg-blue-50 w-full max-w-16 p-2 border rounded outline-none focus:border-primary-200 text-center font-semibold'
+                                        />
+                                    )
+                                })
+                            }
+                        </div>
+                        
+                    </div>
+             
+                    <button disabled={!valideValue} className={` ${valideValue ? "bg-green-800 hover:bg-green-700" : "bg-gray-500" }    text-white py-2 rounded font-semibold my-3 tracking-wide`}>Verify OTP</button>
+
                 </form>
 
-                <div className='mt-6 text-center'>
-                    <p className='text-gray-600 mb-2'>Didn't receive the OTP?</p>
-                    
-                    {otpTimer > 0 ? (
-                        <p className='text-gray-500'>
-                            Resend OTP in <span className='font-semibold text-green-600'>{otpTimer}</span> seconds
-                        </p>
-                    ) : (
-                        <button
-                            onClick={handleResendOtp}
-                            disabled={isResending}
-                            className={`font-semibold ${
-                                isResending
-                                    ? 'text-gray-400 cursor-not-allowed'
-                                    : 'text-green-600 hover:text-green-700'
-                            }`}
-                        >
-                            {isResending ? 'Sending...' : 'Resend OTP'}
-                        </button>
-                    )}
-                </div>
-
-                <div className='mt-6 text-center'>
-                    <button
-                        onClick={() => navigate(-1)}
-                        className='text-gray-600 hover:text-gray-800 font-medium'
-                    >
-                        ← Change Mobile Number
-                    </button>
-                </div>
+                <p>
+                    Already have account? <Link to={"/login"} className='font-semibold text-green-700 hover:text-green-800'>Login</Link>
+                </p>
             </div>
         </section>
     )
 }
 
 export default OtpVerification
+
+
+

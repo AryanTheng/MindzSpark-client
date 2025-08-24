@@ -260,8 +260,11 @@ const SummaryApi = {
         url: '/api/notification/admin/stats',
         method: 'get'
     },
-    // confrom order 
-     confirmOrderEmail: {
+    getBanner: {
+        url:'/api/banner/ban',
+        method: 'get'
+    },
+    confirmOrderEmail: {
         url: '/api/user/confirm-order',
         method: 'put'
     },
