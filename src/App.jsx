@@ -15,6 +15,7 @@ import GlobalProvider from './provider/GlobalProvider';
 import { NotificationProvider } from './provider/NotificationProvider';
 import { FaCartShopping } from "react-icons/fa6";
 import CartMobileLink from './components/CartMobile';
+import ScrollToTop from './components/scrollToTop';
 
 function App() {
   const dispatch = useDispatch()
@@ -71,8 +72,11 @@ function App() {
 
   return (
     <NotificationProvider>
-      <GlobalProvider> 
-        <Header/>
+      <GlobalProvider>
+        <ScrollToTop/>
+        <div>
+          <Header/>
+        </div>
         <main className='min-h-[78vh]'>
             <Outlet/>
         </main>

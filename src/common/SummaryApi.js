@@ -170,6 +170,7 @@ const SummaryApi = {
         url : '/api/order/order-list',
         method : 'get'
     },
+    
     createRazorpayOrder : {
         url : '/api/order/create-razorpay-order',
         method : 'post'
@@ -258,6 +259,15 @@ const SummaryApi = {
     getNotificationStats: {
         url: '/api/notification/admin/stats',
         method: 'get'
+    },
+    // confrom order 
+     confirmOrderEmail: {
+        url: '/api/user/confirm-order',
+        method: 'put'
+    },
+    verifyOrderOtp: {
+        url: '/api/user/verify-confirm-order',
+        method: 'put'
     },
     // KYC and verification APIs
     getKycStatus: {
